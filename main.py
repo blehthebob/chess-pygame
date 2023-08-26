@@ -1,7 +1,7 @@
 from board import *
 
 def main():
-    myboard = ChessBoard()
+    print(position_numeric("e4"))
 
 if __name__ == "__main__":
     main()

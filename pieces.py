@@ -51,29 +51,40 @@ class Pawn(ChessPiece):
     def valid_moves(self, board, pos: str):
         valid = []
         (x, y) = position_numeric(pos)
+        
         if self.colour == "w":
+            # Move forwards
             if board[x][y + 1] == None:
                 valid.append(position_notation(x, y + 1))
+                
                 # First time moved
                 if y == W_PAWN_ROW and board[x][y + 2] == None:
                     valid.append(position_notation(x, y + 2))
+                    
             # Take
-            if board[x - 1][y + 1] != None:
-                valid.append(x - 1, y + 1)
-            if board[x + 1][y + 1] != None:
-                valid.append(x - 1, y + 1)
+            if board[x - 1][y + 1] != None and x != 0:
+                valid.append(position_notation(x - 1, y + 1))
+            if board[x + 1][y + 1] != None and x != BOARD_LENGTH -1:
+                valid.append(position_notation(x + 1, y + 1))
+                
             # En passant
             # TODO: do this using a move log?
+            
         if self.colour == "b":
+            # Move forwards
             if board[x][y - 1] == None:
                 valid.append(position_notation(x, y - 1))
+                
                 # First time moved
                 if y == B_PAWN_ROW and board[x][y - 2] == None:
                     valid.append(position_notation(x, y - 2))
-            if board[x - 1][y - 1] != None:
-                valid.append(x - 1, y - 1)
-            if board[x + 1][y - 1] != None:
-                valid.append(x - 1, y - 1)
+                    
+            # Take
+            if board[x - 1][y - 1] != None and x != 0:
+                valid.append(position_notation(x - 1, y - 1))
+            if board[x + 1][y - 1] != None and x != BOARD_LENGTH - 1:
+                valid.append(position_notation(x + 1, y - 1))
+                
             # En passant
             # TODO: do this using a move log?
         return valid

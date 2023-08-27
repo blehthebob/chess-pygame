@@ -1,4 +1,5 @@
 from utils import *
+from itertools import permutations
 
 class ChessPiece:
     def __init__(self, colour: str):
@@ -43,6 +44,24 @@ class Knight(ChessPiece):
         super().__init__(colour)
         self.symbol = "N"
         
+    def valid_moves(self, board, pos: str):
+        valid = []
+        (x, y) = position_numeric(pos)
+        for i, j in list(permutations([-2, -1, 1, 2], 2)):
+            if (
+                # Check within range of board
+                abs(i) + abs(j) == 3 and
+                0 <= x + i < BOARD_LENGTH and
+                0 <= y + j < BOARD_HEIGHT
+            ):
+                # Check not own piece
+                if board[x + i][y + j] != None:
+                    if board[x + i][y + j].colour != self.colour:
+                        valid.append(position_notation(x + i, y + j))
+                else:
+                    valid.append(position_notation(x + i, y + j))
+        return valid
+        
 class Pawn(ChessPiece):
     def __init__(self, colour):
         super().__init__(colour)
@@ -64,7 +83,7 @@ class Pawn(ChessPiece):
             # Take
             if board[x - 1][y + 1] != None and x != 0:
                 valid.append(position_notation(x - 1, y + 1))
-            if board[x + 1][y + 1] != None and x != BOARD_LENGTH -1:
+            if board[x + 1][y + 1] != None and x != BOARD_LENGTH - 1:
                 valid.append(position_notation(x + 1, y + 1))
                 
             # En passant

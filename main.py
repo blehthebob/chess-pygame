@@ -1,9 +1,10 @@
 from board import *
 
 def main():
-    piece = King("w")
     board = ChessBoard()
-    board.place_piece(piece, "e3")
+    board.move_piece("a2", "a4")
+    board.move_piece("a7", "a5")
+    board.move_piece("a4", "a5")
     print(board)
 
 if __name__ == "__main__":

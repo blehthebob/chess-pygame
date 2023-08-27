@@ -13,13 +13,14 @@ class ChessBoard:
     # Generate and place pawns
     def load_pawns(self):
         for i in range(BOARD_LENGTH):
-            self.board[i][PAWN_ROW] = Pawn("w")
-            self.board[i][BOARD_HEIGHT - PAWN_ROW - 1] = Pawn("b")
+            self.board[i][W_PAWN_ROW] = Pawn("w")
+            self.board[i][B_PAWN_ROW] = Pawn("b")
     
+    # Generate and place non-pawn pieces
     def load_pieces(self, colour):
-        row = PIECE_ROW
+        row = W_PIECE_ROW
         if colour == "b":
-            row = BOARD_HEIGHT - PIECE_ROW - 1
+            row = B_PIECE_ROW
         
         pieces = {
             0: Rook(colour),
@@ -39,14 +40,14 @@ class ChessBoard:
     def __str__(self):
         sb = ""
         for i in reversed(range(BOARD_HEIGHT)):
-            sb += str(i + 1) + " "
+            sb += str(i + 1) + "  "
             for j in range(BOARD_LENGTH):
                 if self.board[j][i] == None:
                     sb += "# "
                 else:
                     sb += str(self.board[j][i]) + " "
             sb += "\n"
-        sb += "  "
+        sb += "\n   "
         for i in range(ord("a"), ord("h") + 1):
             sb += chr(i) + " "
         return sb
@@ -64,5 +65,10 @@ class ChessBoard:
     # Moves a piece from square 'here' to 'there'
     def move_piece(self, here: str, there: str):
         piece = self.fetch_piece(here)
-        self.place_piece(piece, there)
-        self.place_piece(None, here)
+        if piece == None:
+            return False        
+        if there in piece.valid_moves(self.board, here):
+            self.place_piece(piece, there)
+            self.place_piece(None, here)
+            return True
+        return False

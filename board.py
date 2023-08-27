@@ -1,15 +1,40 @@
 from pieces import *
 from utils import *
 
-BOARD_LENGTH = 8
-BOARD_HEIGHT = 8
-
 class ChessBoard:
     def __init__(self):
         # Nested lists are y-axis, outside list is x-axis
         # Reference square e4 with board[4][3]
         self.board = [[None] * BOARD_HEIGHT for i in range(BOARD_LENGTH)]
+        self.load_pawns()
+        self.load_pieces("w")
+        self.load_pieces("b")
         
+    # Generate and place pawns
+    def load_pawns(self):
+        for i in range(BOARD_LENGTH):
+            self.board[i][PAWN_ROW] = Pawn("w")
+            self.board[i][BOARD_HEIGHT - PAWN_ROW - 1] = Pawn("b")
+    
+    def load_pieces(self, colour):
+        row = PIECE_ROW
+        if colour == "b":
+            row = BOARD_HEIGHT - PIECE_ROW - 1
+        
+        pieces = {
+            0: Rook(colour),
+            1: Knight(colour),
+            2: Bishop(colour),
+            3: Queen(colour),
+            4: King(colour),
+            5: Bishop(colour),
+            6: Knight(colour),
+            7: Rook(colour)
+        }
+        
+        for key, value in pieces.items():
+            self.board[key][row] = value
+    
     # Returns graphic representation of the board using characters
     def __str__(self):
         sb = ""

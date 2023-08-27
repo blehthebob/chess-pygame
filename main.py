@@ -1,7 +1,7 @@
 from board import *
 
 def main():
-    piece = King()
+    piece = King("w")
     board = ChessBoard()
     board.place_piece(piece, "e3")
     print(board)

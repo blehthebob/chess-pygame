@@ -2,11 +2,19 @@ from board import *
 
 def main():
     board = ChessBoard()
-    board.move_piece("a2", "a4")
-    board.move_piece("b7", "b5")
-    board.move_piece("a4", "a1")
-    board.move_piece("b1", "c3")
-    board.move_piece("c3", "c3")
+    board.move_piece("e2", "e4")
+    print(board)
+    board.move_piece("e7", "e5")
+    print(board)
+    board.move_piece("g1", "f3")
+    print(board)
+    board.move_piece("b8", "c6")
+    print(board)
+    board.move_piece("f1", "c4")
+    print(board)
+    board.move_piece("d8", "h4")
+    print(board)
+    board.move_piece("f3", "h4")
     print(board)
 
 if __name__ == "__main__":

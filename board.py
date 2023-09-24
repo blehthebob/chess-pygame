@@ -50,6 +50,7 @@ class ChessBoard:
         sb += "\n   "
         for i in range(ord("a"), ord("h") + 1):
             sb += chr(i) + " "
+        sb += "\n\n"
         return sb
 
     # Places a piece on a square on the board.
@@ -61,6 +62,30 @@ class ChessBoard:
     def fetch_piece(self, pos: str):
         (x, y) = position_numeric(pos)
         return self.board[x][y]
+    
+    def parse_move(self, move: str):
+        # Castling
+        if move == "0-0":
+            self.move_piece("e1", "g1")
+            self.move_piece("h1", "f1")
+        if move == "0-0-0":
+            self.move_piece("e1", "c1")
+            self.move_piece("a1", "d1")
+        
+        # Checkmate
+        if move[-1] == "#":
+            self.parse_move(move[:-1])
+            print("Checkmate!")
+        
+        # Capture
+        
+        # Check
+        
+        # Two pieces move to same square
+        
+        # Two pieces move to same square and same column
+        
+        # Normal case
     
     # Moves a piece from square 'here' to 'there'
     def move_piece(self, here: str, there: str):

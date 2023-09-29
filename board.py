@@ -57,35 +57,51 @@ class ChessBoard:
     def place_piece(self, piece: ChessPiece, pos: str):
         (x, y) = position_numeric(pos)
         self.board[x][y] = piece
-    
+
     # Returns the piece obj on the specified square on the board
     def fetch_piece(self, pos: str):
         (x, y) = position_numeric(pos)
         return self.board[x][y]
-    
+
+    # Parses a move from algebraic notation and enacts it
     def parse_move(self, move: str):
         # Castling
         if move == "0-0":
             self.move_piece("e1", "g1")
             self.move_piece("h1", "f1")
-        if move == "0-0-0":
+                
+
+        elif move == "0-0-0":
             self.move_piece("e1", "c1")
             self.move_piece("a1", "d1")
-        
+
         # Checkmate
-        if move[-1] == "#":
+        elif move[-1] == "#":
             self.parse_move(move[:-1])
             print("Checkmate!")
-        
+
+        #Check
+        elif move[-1] == "+":
+            self.parse_move(move[:-1])
+            print("Check!")
+
         # Capture
-        
-        # Check
-        
+        elif "x" in move:
+            if move[0].islower():
+                # Find pawn location
+                self.move_piece("pawn_location", move[2:])
+            else:
+                self.parse_move(move[0] + move[2:])
+                
         # Two pieces move to same square
         
         # Two pieces move to same square and same column
         
         # Normal case
+        else:
+            piece = move[0]
+            there = move[1:]
+            self.move_piece("here_location", there)
     
     # Moves a piece from square 'here' to 'there'
     def move_piece(self, here: str, there: str):
@@ -96,4 +112,5 @@ class ChessBoard:
             self.place_piece(piece, there)
             self.place_piece(None, here)
             return True
-        return False
+        else:
+            return False

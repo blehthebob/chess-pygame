@@ -1,25 +1,48 @@
-from utils import *
 from itertools import permutations
+from utils import *
 
 class ChessPiece:
+    """
+    ChessPiece parent class representing a chess piece. Contains common method
+    definitions.
+    """
+
     def __init__(self, colour: str):
         self.symbol: str = None
         self.colour: str = colour
-    
-    # Returns symbol representation of pieces
-    # White pieces are upper case and black pieces are lower case
-    def __str__(self):
+
+    def __str__(self) -> None:
+        """
+        Returns symbol representation of pieces.
+        White pieces are upper case and black pieces are lower case.
+        """
+
         if self.colour == "w":
             return self.symbol
-        else:
-            return self.symbol.lower()
-        
-    # Returns a list of valid moves in notation form given a board in nested
-    # list form and the position of the piece
-    def valid_moves(self, board, pos: str):
-        pass
 
-    def check_diagonal(self, board, pos: str):
+        return self.symbol.lower()
+
+    def valid_moves(self, board: [list], pos: str) -> [str]:
+        """
+        Returns a list of valid moves in notation form given a board in nested
+        list form and the position of the piece.
+
+        Args:
+            board: nested list of either ChessPiece or None elements
+            pos: string representation of position of piece
+        """
+
+    def check_diagonal(self, board: [list], pos: str) -> [str]:
+        """_summary_ # TODO TODO TODO TODO
+        ##################################################################
+        ###################################################################
+        ####################################################################
+
+        Args:
+            board: nested list of either ChessPiece or None elements
+            pos: string representation of position of piece
+        """
+
         # Function pointers for each direction
         next_square = {
             "nw": lambda x, y: (x - 1, y + 1),
@@ -30,7 +53,14 @@ class ChessPiece:
         directions = ["nw", "ne", "sw", "se"]
         return self.check_squares(directions, next_square, board, pos)
     
-    def check_row(self, board, pos: str):
+    def check_row(self, board: [list], pos: str) -> [str]:
+        """_summary_
+
+        Args:
+            board: nested list of either ChessPiece or None elements
+            pos: string representation of position of piece
+        """
+
         # Function pointers for each direction
         next_square = {
             "n": lambda x, y: (x, y + 1),
@@ -43,7 +73,20 @@ class ChessPiece:
     
     # Helper function for check_diagonal and check_row which generalises
     # the checking of valid squares
-    def check_squares(self, directions, next_square, board, pos: str):
+     # TODO find out what function is
+    def check_squares(
+        self, directions: [str], next_square, board: [list], pos: str
+    ) -> [str]:
+        """
+        asd
+
+        Args:
+            directions (str]): _description_
+            next_square (_type_): _description_
+            board: nested list of either ChessPiece or None elements
+            pos: string representation of position of piece
+        """
+
         valid = []
         for direction in directions:
             (x, y) = position_numeric(pos)

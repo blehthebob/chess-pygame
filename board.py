@@ -2,26 +2,40 @@ from pieces import *
 from utils import *
 
 class ChessBoard:
+    """
+    ChessBoard object representing a chessboard, using a nested list containing
+    either a Piece or None.
+    """
+
     def __init__(self):
         # Nested lists are y-axis, outside list is x-axis
         # Reference square e4 with board[4][3]
         self.board = [[None] * BOARD_HEIGHT for i in range(BOARD_LENGTH)]
-        self.load_pawns()
-        self.load_pieces("w")
-        self.load_pieces("b")
-        
-    # Generate and place pawns
-    def load_pawns(self):
+        self.__load_pawns()
+        self.__load_pieces("w")
+        self.__load_pieces("b")
+
+    def __load_pawns(self) -> None:
+        """Helper funtion for __init__ which generates and places pawns."""
+
         for i in range(BOARD_LENGTH):
             self.board[i][W_PAWN_ROW] = Pawn("w")
             self.board[i][B_PAWN_ROW] = Pawn("b")
-    
-    # Generate and place non-pawn pieces
-    def load_pieces(self, colour):
+
+    def __load_pieces(self, colour: str) -> None:
+        """
+        Helper function for __init__ which generates and places non pawn
+        pieces.
+        
+        Args:
+            colour: colour of the pieces to be placed
+        """
+
         row = W_PIECE_ROW
         if colour == "b":
             row = B_PIECE_ROW
-        
+
+        # Dictionary of pieces and their columns on the board
         pieces = {
             0: Rook(colour),
             1: Knight(colour),
@@ -32,35 +46,64 @@ class ChessBoard:
             6: Knight(colour),
             7: Rook(colour)
         }
-        
+
+        # Placing pieces on the board, using numeric indexes
         for key, value in pieces.items():
             self.board[key][row] = value
-    
-    # Returns graphic representation of the board using characters
-    def __str__(self):
+
+    def __str__(self) -> str:
+        """
+        Returns graphic representation of the board using characters. White
+        pieces are uppercase, black pieces are lowercase.
+        """
+
+        # String builder
         sb = ""
+
         for i in reversed(range(BOARD_HEIGHT)):
+
+            # Row number and spacing
             sb += str(i + 1) + "  "
+
             for j in range(BOARD_LENGTH):
+                # Piece representations, with # for empty squares
                 if self.board[j][i] == None:
                     sb += "# "
                 else:
                     sb += str(self.board[j][i]) + " "
             sb += "\n"
+
+        # Column names
         sb += "\n   "
         for i in range(ord("a"), ord("h") + 1):
             sb += chr(i) + " "
+
+        # Extra new lines for visibility when printed in sequence
         sb += "\n\n"
+
         return sb
 
-    # Places a piece on a square on the board.
-    def place_piece(self, piece: ChessPiece, pos: str):
-        (x, y) = position_numeric(pos)
+    def place_piece(self, piece: ChessPiece, pos: str) -> None:
+        """
+        Places a piece on a square on the board.
+
+        Args:
+            piece: piece object to be placed
+            pos: string representation of target square
+        """
+
+        x, y = position_numeric(pos)
         self.board[x][y] = piece
 
-    # Returns the piece obj on the specified square on the board
-    def fetch_piece(self, pos: str):
-        (x, y) = position_numeric(pos)
+    def fetch_piece(self, pos: str) -> ChessPiece:
+        """
+        Returns the piece object on the specified square on the board.
+
+        Args:
+            pos: string representation of target square
+        """
+
+        x, y = position_numeric(pos)
         return self.board[x][y]
 
     # Parses a move from algebraic notation and enacts it
